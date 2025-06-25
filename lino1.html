@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lino - Robotic Assignment Writing</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/lino.css') }}" />
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1 class="title">Just Print It!</h1>
+      <p class="subtitle">Lino writes it for you at just ₹10/page, so you can focus on what truly matters.</p>
+      <div class="aurora">
+        <div class="aurora__item"></div>
+        <div class="aurora__item"></div>
+        <div class="aurora__item"></div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Left Panel -->
+      <div class="panel">
+        <h2 class="panel-title"><i class="fas fa-font"></i> Select Preferred Font</h2>
+
+        <div class="font-selection">
+          <div class="font-option">
+            <input type="radio" id="font-all" name="fontOption" value="All" checked>
+            <div class="font-preview">
+              <div class="font-name">All Fonts (Recommended)</div>
+              <div class="font-sample">We'll select the best font for your document</div>
+            </div>
+          </div>
+
+          <div class="font-option">
+            <input type="radio" id="font-singleline" name="fontOption" value="FeasiblySingleLine-z8D90.ttf">
+            <div class="font-preview">
+              <div class="font-name">Single Line</div>
+              <div class="font-sample">Clean and efficient handwriting style</div>
+            </div>
+          </div>
+
+          <div class="font-option">
+            <input type="radio" id="font-allure" name="fontOption" value="FeasiblySingleLine-z8D90.ttf">
+            <div class="font-preview">
+              <div class="font-name">Allure</div>
+              <div class="font-sample">Elegant and flowing script style</div>
+            </div>
+          </div>
+
+          <div class="font-option">
+            <input type="radio" id="font-heavy" name="fontOption" value="FeasiblySingleLine-z8D90.ttf">
+            <div class="font-preview">
+              <div class="font-name">Heavy</div>
+              <div class="font-sample">Bold and impactful writing style</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="font-note">
+          <p>We assign different fonts for every 15 repetitions of customers to avoid pattern observations.</p>
+          <p><b>NOTE:</b> We add subtle human writing variations to the robotic output so it doesn't look
+            machine-printed.</p>
+        </div>
+
+        <div class="service-options">
+          <div class="option-item">
+            <div class="option-text">Do you want digital photos of written sheets? (PDFs)</div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="digitalToggle">
+              <span class="slider"></span>
+              <div class="toggle-labels">
+                <span class="on">Yes</span>
+                <span class="off">No</span>
+              </div>
+            </label>
+          </div>
+
+          <div class="option-item">
+            <div class="option-text">Do you want physical sheet delivery?</div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="physicalToggle">
+              <span class="slider"></span>
+              <div class="toggle-labels">
+                <span class="on">Yes</span>
+                <span class="off">No</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="physical-warning-msg" id="physical-msg">
+          <span class="warning-icon">⚠️</span>
+          <span class="warning-text">Checking your location...</span>
+        </div>
+      </div>
+
+      <!-- Right Panel -->
+      <div class="panel">
+        <h2 class="panel-title"><i class="fas fa-edit"></i> Enter Your Content</h2>
+
+        <!-- Terms Acceptance -->
+        <div class="terms-container">
+          <input type="checkbox" id="terms-accept" class="terms-checkbox" />
+          <div class="terms-text">
+            I accept the
+            <span class="terms-link" id="terms-link">
+              Terms and Conditions <small>(read full)</small>
+            </span>
+          </div>
+        </div>
+
+        <!-- Writing Mode -->
+        <div class="writing-mode">
+          <div class="mode-title">Choose how to submit your content</div>
+
+          <div class="mode-options">
+            <div class="mode-option" id="automatic-mode">
+              <div class="mode-icon"><i class="fas fa-bolt"></i></div>
+              <div class="mode-name">Automatic</div>
+              <div class="mode-description">Paste your entire assignment content at once</div>
+            </div>
+
+            <div class="mode-option" id="pagewise-mode">
+              <div class="mode-icon"><i class="fas fa-file-alt"></i></div>
+              <div class="mode-name">Page-Wise</div>
+              <div class="mode-description">Upload your assignment page by page</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text Area -->
+        <div class="text-area-container" id="text-area">
+          <textarea class="assignment-textarea" spellcheck="true"
+            placeholder="Write or paste your assignment here..."></textarea>
+          <div class="word-count">
+            Words: <span id="word-count">0</span> (Approx. pages: <span id="page-count">0</span>)
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="submit-container">
+          <button class="submit-btn" id="submit-btn" disabled>
+            <i class="fas fa-paper-plane"></i> Submit Assignment
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terms Modal -->
+  <div class="terms-modal" id="terms-modal">
+    <div class="terms-modal-content">
+      <span class="terms-close-btn" id="terms-close-btn">&times;</span>
+      <h2 class="terms-modal-title">Terms and Conditions</h2>
+      <div class="terms-content">
+        <p>By using Lino's automated writing services ("Service"), you agree to the following terms:</p>
+        <h3>1. Service Provision</h3>
+        <p>Lino provides robotic writing assistance through automated systems. All deliverables are generated by
+          AI-powered robotics without human intervention.</p>
+        <h3>2. Academic Responsibility</h3>
+        <ul>
+          <li>Compliance with institutional academic policies</li>
+          <li>Verification of work originality</li>
+          <li>All risks from use of output are assumed by the user</li>
+        </ul>
+        <h3>3. Input Specifications</h3>
+        <ul>
+          <li>Provide final draft text</li>
+          <li>Ensure formatting accuracy</li>
+          <li>Count words correctly</li>
+        </ul>
+        <h3>4. Physical Delivery</h3>
+        <ul>
+          <li>Delivery is only available in Jaipur</li>
+          <li>Subject to courier delays</li>
+        </ul>
+        <h3>5. Service Changes</h3>
+        <p>We reserve the right to modify or discontinue features at any time.</p>
+        <button class="terms-accept-btn" id="modal-accept-btn">I Accept Terms</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='js/lino.js') }}"></script>
+</body>
+
+</html>
